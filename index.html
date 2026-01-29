@@ -1,39 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vue Calculator</title>
-  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <title>Калькулятор — Vue</title>
+  <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.prod.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="p-5 font-sans">
-  <div id="app" class="max-w-sm mx-auto">
-    <input
-      class="w-full h-10 text-xl text-right mb-2 p-2 border rounded"
-      type="text"
-      v-model="display"
-      readonly
-    />
-    <div class="grid grid-cols-4 gap-2">
-      <button class="py-2 text-lg bg-gray-200 rounded" v-for="n in [7,8,9]" @click="append(n)">{{ n }}</button>
-      <button class="py-2 text-lg bg-gray-200 rounded" @click="append('/')">/</button>
-      <button class="py-2 text-lg bg-gray-200 rounded" v-for="n in [4,5,6]" @click="append(n)">{{ n }}</button>
-      <button class="py-2 text-lg bg-gray-200 rounded" @click="append('*')">*</button>
-      <button class="py-2 text-lg bg-gray-200 rounded" v-for="n in [1,2,3]" @click="append(n)">{{ n }}</button>
-      <button class="py-2 text-lg bg-gray-200 rounded" @click="append('-')">-</button>
-      <button class="py-2 text-lg bg-gray-200 rounded" @click="append(0)">0</button>
-      <button class="py-2 text-lg bg-gray-200 rounded" @click="append('.')">.</button>
-      <button class="py-2 text-lg bg-blue-400 text-white rounded" @click="calculate">=</button>
-      <button class="py-2 text-lg bg-gray-200 rounded" @click="append('+')">+</button>
-      <button class="py-2 text-lg bg-red-400 text-white rounded col-span-4" @click="clearDisplay">C</button>
-    </div>
-    <div class="mt-4 space-y-1">
-      <div class="text-sm" v-for="item in history" :key="item.id">
-        {{ item.expression }} = {{ item.result }}
-      </div>
-    </div>
-  </div>
+
+<body class="min-h-screen p-5 font-sans bg-slate-100">
+  <main id="app" class="max-w-sm mx-auto">
+    <h1 class="sr-only">Калькулятор</h1>
+
+    <label for="calc-display" class="sr-only">Результат и ввод выражения</label>
+    <input id="calc-display"
+      class="w-full h-12 text-2xl text-right mb-3 p-3 border border-slate-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+      type="text" v-model="display" readonly autocomplete="off" aria-readonly="true" />
+
+    <section class="grid grid-cols-4 gap-2" aria-label="Клавиши калькулятора">
+      <button v-for="(btn, index) in buttons" :key="index" type="button" :class="getButtonClass(btn.variant)"
+        :aria-label="btn.ariaLabel" @click="onButtonClick(btn.value)">{{ btn.label }}</button>
+    </section>
+
+    <section class="mt-6" aria-label="История вычислений">
+      <h2 class="text-sm font-medium text-slate-600 mb-2">История</h2>
+      <ul class="space-y-1.5 text-sm text-slate-700">
+        <li v-for="item in history" :key="item.id" class="truncate">
+          {{ item.expression }} = {{ item.result }}
+        </li>
+        <li v-if="history.length === 0" class="text-slate-400">Пока пусто</li>
+      </ul>
+    </section>
+  </main>
   <script src="app.js"></script>
 </body>
+
 </html>
