@@ -1,39 +1,61 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Калькулятор — Vue</title>
-  <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.prod.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Калькулятор с клавиатурным вводом, скобками и историей вычислений.">
+  <title>Калькулятор</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 </head>
+<body>
+  <main class="workspace">
+    <header class="page-heading">
+      <h1>Калькулятор</h1>
+    </header>
 
-<body class="min-h-screen p-5 font-sans bg-slate-100">
-  <main id="app" class="max-w-sm mx-auto">
-    <h1 class="sr-only">Калькулятор</h1>
+    <section class="calculator" aria-labelledby="display-label">
+      <div class="readout">
+        <div class="readout-top">
+          <label for="calc-display" id="display-label">Вычисление</label>
+          <span id="calc-context"></span>
+        </div>
+        <input id="calc-display" type="text" value="0" readonly autocomplete="off" spellcheck="false">
+        <p id="calc-status" class="readout-status" role="status"></p>
+      </div>
 
-    <label for="calc-display" class="sr-only">Результат и ввод выражения</label>
-    <input id="calc-display"
-      class="w-full h-12 text-2xl text-right mb-3 p-3 border border-slate-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-      type="text" v-model="display" readonly autocomplete="off" aria-readonly="true" />
+      <div class="keypad" role="group" aria-label="Клавиши калькулятора">
+        <button type="button" data-key="Escape" class="utility" aria-label="Очистить">C</button>
+        <button type="button" data-key="Backspace" class="utility" aria-label="Удалить последний символ">⌫</button>
+        <button type="button" data-key="(" class="utility" aria-label="Открыть скобку">(</button>
+        <button type="button" data-key=")" class="utility" aria-label="Закрыть скобку">)</button>
+        <button type="button" data-key="7">7</button>
+        <button type="button" data-key="8">8</button>
+        <button type="button" data-key="9">9</button>
+        <button type="button" data-key="/" class="operator" aria-label="Деление">÷</button>
+        <button type="button" data-key="4">4</button>
+        <button type="button" data-key="5">5</button>
+        <button type="button" data-key="6">6</button>
+        <button type="button" data-key="*" class="operator" aria-label="Умножение">×</button>
+        <button type="button" data-key="1">1</button>
+        <button type="button" data-key="2">2</button>
+        <button type="button" data-key="3">3</button>
+        <button type="button" data-key="-" class="operator" aria-label="Вычитание">−</button>
+        <button type="button" data-key="0">0</button>
+        <button type="button" data-key="." aria-label="Десятичная точка">.</button>
+        <button type="button" data-key="=" class="equals" aria-label="Вычислить">=</button>
+        <button type="button" data-key="+" class="operator" aria-label="Сложение">+</button>
+      </div>
 
-    <section class="grid grid-cols-4 gap-2" aria-label="Клавиши калькулятора">
-      <button v-for="(btn, index) in buttons" :key="index" type="button" :class="getButtonClass(btn.variant)"
-        :aria-label="btn.ariaLabel" @click="onButtonClick(btn.value)">{{ btn.label }}</button>
+      <p class="shortcuts"><kbd>Enter</kbd> вычислить <kbd>Esc</kbd> очистить</p>
     </section>
 
-    <section class="mt-6" aria-label="История вычислений">
-      <h2 class="text-sm font-medium text-slate-600 mb-2">История</h2>
-      <ul class="space-y-1.5 text-sm text-slate-700">
-        <li v-for="item in history" :key="item.id" class="truncate">
-          {{ item.expression }} = {{ item.result }}
-        </li>
-        <li v-if="history.length === 0" class="text-slate-400">Пока пусто</li>
-      </ul>
+    <section class="history" aria-labelledby="history-title">
+      <h2 id="history-title">История</h2>
+      <p id="history-empty">Здесь появятся результаты вычислений.</p>
+      <ol id="history-list"></ol>
     </section>
   </main>
-  <script src="app.js"></script>
 </body>
-
 </html>
